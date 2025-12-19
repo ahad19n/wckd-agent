@@ -1,0 +1,13 @@
+services:
+  agent:
+    build: ./agent
+    restart: unless-stopped
+    volumes:
+      - ./:/host
+
+  cloudflared:
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+
+  traefik:
+    image: traefik

@@ -1,3 +1,7 @@
+secrets:
+  token-file:
+    file: ./.token-file
+
 services:
   agent:
     build: ./agent
@@ -9,6 +13,9 @@ services:
   cloudflared:
     image: cloudflare/cloudflared
     restart: always
+    secrets:
+      - token-file
+    command: tunnel run --token-file /run/secrets/token-file
 
   traefik:
     image: traefik:v3.6

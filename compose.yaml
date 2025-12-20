@@ -1,13 +1,12 @@
 secrets:
   token-file:
-    file: ./.token-file
+    file: ./token-file
 
 services:
   agent:
     build: ./agent
     restart: always
     volumes:
-      - ./:/host
       - /var/run/docker.sock:/var/run/docker.sock
 
   cloudflared:
@@ -24,5 +23,6 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--providers.docker.exposedByDefault=false"
+      - "--entrypoints.web.forwardedheaders.insecure=true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

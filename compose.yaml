@@ -1,13 +1,21 @@
 services:
   agent:
     build: ./agent
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./:/host
+      - /var/run/docker.sock:/var/run/docker.sock
 
   cloudflared:
     image: cloudflare/cloudflared
-    restart: unless-stopped
+    restart: always
 
   traefik:
-    image: traefik
+    image: traefik:v3.6
+    restart: always
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--providers.docker.exposedByDefault=false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
